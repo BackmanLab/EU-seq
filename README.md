@@ -94,10 +94,9 @@ do echo "${file}";
 done
 
 ```
-<br />
+
 ### Ouput
-<br />
-<br />
+
 Alignment.sh will generate several directories for output.  
 - BAM: Raw, filtered, and filtered sorted BAMs will be deposited here  
 - counts: HTSeq counts will be deposited in this directory  
@@ -105,9 +104,9 @@ Alignment.sh will generate several directories for output.
 - fastqc: Read QC files from FASTQC 
 - OUT: Trimmed FASTQ files from Trimgalore  
 - SAM: Raw alignment files from HISAT2  
-<br />
+
 The full script, <kbd> alignment.sh </kbd> , is below:
-<br />
+
 ```shell
 #!/bin/bash
 ##################################################################
