@@ -29,7 +29,6 @@ wget -L https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.ncbiR
 <br />
 These files should be downloaded into an annotation file directory: <kbd> /root/genome/gtf </kbd> and a genome index direcotry: `<kbd> /root/genome/ref </kbd>
 <br />
-<br />
 Scripts submitted to the high performance computing cluster (HPC) at Northwestern University require a header that can be interpreted by the schdeduler. An example SLURM header for the Quest HPC is below:
 <br />
 ```shell
@@ -79,6 +78,7 @@ Usage: <kbd>  bash alignment.sh -f <Forward Read> -w <Path to Working Directory>
 __Run script in directory where fastqs are located__  
 This script completes 6 functions: Quality Control, Alignment, Sorting, Counting, and Read QC of features:  
 <br />
+
 - Quality Control: eliminates the adaptor and low quality reads using trim_galore.  
 - Mapping: mapping via HISAT2 for all features  
 - Sorting: Sort the bam files, keep uniquely mapping reads, generate coverage files  
