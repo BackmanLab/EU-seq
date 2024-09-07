@@ -1,6 +1,4 @@
 ## EU-seq Data Processing Guide
-<br />
-<br />
 
 ### Overview
 <br />
