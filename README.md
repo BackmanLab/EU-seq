@@ -78,7 +78,11 @@ hisat2-build -p 12 --exon $exon --ss $ss $ref hg38
 
 This script performs QC, trimming, mapping, coverage, and counting for EU-seq generated data. It generates directories, loops through  fastqs, and moves results into respective directories. This script is written to run on a SLURM HPC.  
 
-Usage: <kbd>  bash alignment.sh -f <Forward Read> -w <Path to Working Directory> -g <Path to Bowtie Indices> -r <Path to Annotation File> -t <threads> </kbd>  
+Usage:
+
+```shell
+bash alignment.sh -f <Forward Read> -w <Path to Working Directory> -g <Path to Bowtie Indices> -r <Path to Annotation File> -t <threads>
+```
 
 __Run script in directory where fastqs are located__  
 This script completes 6 functions: Quality Control, Alignment, Sorting, Counting, and Read QC of features:  
