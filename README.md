@@ -47,13 +47,16 @@ Scripts submitted to the high performance computing cluster (HPC) at Northwester
 Much like Bowtie, [HISAT](http://daehwankimlab.github.io/hisat2/howto/) requires indices to be built prior to alignment. This allows efficient searching The first step is extraction of exons and splice sites from the GTF (annotation) file using their scripts. An example below:
 
 ```shell
+
 /projects/b1042/BackmanLab/Lucas/090124_euseq/genome/ref_hisat/cloud.biohpc.swmed.edu/hisat2-2.2.1/hisat2_extract_splice_sites.py /projects/b1042/BackmanLab/Lucas/090124_euseq/genome/gtf/hg38.ncbiRefSeq.gtf > genome.ss
 /projects/b1042/BackmanLab/Lucas/090124_euseq/genome/ref_hisat/cloud.biohpc.swmed.edu/hisat2-2.2.1/hisat2_extract_exons.py /projects/b1042/BackmanLab/Lucas/090124_euseq/genome/gtf/hg38.ncbiRefSeq.gtf > genome.exon
+
 ```
 
 HISAT2 indices for the reference genome can be built prior to alignment using the following command <kbd> hisat2-build -p < threads > --exon < path_to_exon_file > --ss < path_to_splicesite_file > < path_to_reference_genome.fa > < output_root_name > </kbd> . This script should be run in the directory where the reference genome is. An example below:
 
 ```shell
+
 ##-- header here --##
 
 module load hisat2/2.1.0
@@ -64,6 +67,7 @@ ss=/projects/b1042/BackmanLab/Lucas/090124_euseq/genome/ref_hisat/genome.ss
 cd /projects/b1042/BackmanLab/Lucas/090124_euseq/genome/ref_hisat/
 
 hisat2-build -p 12 --exon $exon --ss $ss $ref hg38
+
 ```
 
 ## Alignment.sh usage and description
