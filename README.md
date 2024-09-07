@@ -1,17 +1,12 @@
 ## EU-seq Data Processing Guide
 <br />
 <br />
-
 ### Overview
-
 <br />
 <br />
-
 EU-seq is a nascent RNA sequencing method, similar to PRO-seq, BRU-seq, or NET-seq. For more information on nascent RNA sequencing methods, refer to this [review](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6858503/). A uridine analog, 5-ethynyluridine (EU), is added to culture media in vivo to label nascent transcripts. It incorporates into newly synthesized RNAs within minutes, making it a very fast and convenient assay. Total RNA is collected from lysed cells upon the end of an experiment and biotin is conjugated to EU-labeled RNAs to allow isolation of biotinylated RNAs. These RNAs are then used to generate cDNA libraries and sequenced using paired end 75 bp highthroughput sequencing. The subsequent EU-seq data then needs to be processed for analysis.
-
 <br />
 <br />
-
 This README offers setup and usage instruction for <kbd> alignment.sh </kbd> , a script for processing EU-seq data. While there are several publications that utilize different approaches to EU-seq analysis, I found [this protocol](https://star-protocols.cell.com/protocols/961#expected-outcomes) and [this paper](https://elifesciences.org/reviewed-preprints/94001#s6) most relevant. The [Github](https://github.com/gucascau/NascentDiff) for the latter paper contains all of their scripts.
 
 <br />
