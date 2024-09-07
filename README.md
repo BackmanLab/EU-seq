@@ -56,7 +56,6 @@ Much like Bowtie, [HISAT](http://daehwankimlab.github.io/hisat2/howto/) requires
 HISAT2 indices for the reference genome can be built prior to alignment using the following command <kbd> hisat2-build -p < threads > --exon < path_to_exon_file > --ss < path_to_splicesite_file > < path_to_reference_genome.fa > < output_root_name > </kbd> . This script should be run in the directory where the reference genome is. An example below:
 
 ```shell
-
 ##-- header here --##
 
 module load hisat2/2.1.0
