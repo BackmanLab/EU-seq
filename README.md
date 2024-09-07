@@ -26,7 +26,7 @@ wget -L https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.ncbiR
 
 These files should be downloaded into an annotation file directory: <kbd> /root/genome/gtf </kbd> and a genome index directory: <kbd> /root/genome/ref </kbd>
 
-Scripts submitted to the high performance computing cluster (HPC) at Northwestern University require a header that can be interpreted by the schdeduler. An example SLURM header for the Quest HPC is below:
+Scripts submitted to the high performance computing cluster (HPC) at Northwestern University require a header that can be interpreted by the scheduler. An example SLURM header for the Quest HPC is below:
 
 ```shell
 #!/bin/bash
