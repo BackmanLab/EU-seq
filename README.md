@@ -3,34 +3,31 @@
 ### Overview
 
 EU-seq is a nascent RNA sequencing method, similar to PRO-seq, BRU-seq, or NET-seq. For more information on nascent RNA sequencing methods, refer to this [review](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6858503/). A uridine analog, 5-ethynyluridine (EU), is added to culture media in vivo to label nascent transcripts. It incorporates into newly synthesized RNAs within minutes, making it a very fast and convenient assay. Total RNA is collected from lysed cells upon the end of an experiment and biotin is conjugated to EU-labeled RNAs to allow isolation of biotinylated RNAs. These RNAs are then used to generate cDNA libraries and sequenced using paired end 75 bp highthroughput sequencing. The subsequent EU-seq data then needs to be processed for analysis.
-<br />
-<br />
+
 This README offers setup and usage instruction for <kbd> alignment.sh </kbd> , a script for processing EU-seq data. While there are several publications that utilize different approaches to EU-seq analysis, I found [this protocol](https://star-protocols.cell.com/protocols/961#expected-outcomes) and [this paper](https://elifesciences.org/reviewed-preprints/94001#s6) most relevant. The [Github](https://github.com/gucascau/NascentDiff) for the latter paper contains all of their scripts.
-<br />
-<br />
+
 Both publications use [Tophat](https://ccb.jhu.edu/software/tophat/tutorial.shtml) for alignment because it is a splice-aware wrapper for Bowtie2. Functionally, it uses Bowtie to align reads and then deduces where the slice junctions are, and then maps those reads with a second pass, whereas Bowtie normally discards reads that map across junctions. For nascent RNA seq data, this is preferential since introns tend to accumulate many more reads than in Total RNA-seq or Poly A data. Tophat has been superceded by [HISAT2](http://daehwankimlab.github.io/hisat2/), a faster and more efficient splice-aware aligner. Support for Tophat is also minimal. For these reasons, we implemented HISAT2 in our script for alignments.
-<br />
-<br />
+
 A reference genome and genome annotation are needed to build the indices for HISAT2. There are a few options for sourcing these files. One is Ensembl. These can be downloaded to your <kbd> genome </kbd> directory using the following commands. Be sure to use the most recent version:
-<br />
+
 ```shell
 VERSION=108
 wget -L ftp://ftp.ensembl.org/pub/release-$VERSION/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna_sm.primary_assembly.fa.gz
 wget -L ftp://ftp.ensembl.org/pub/release-$VERSION/gtf/homo_sapiens/Homo_sapiens.GRCh38.$VERSION.gtf.gz
 ```
-<br />
+
 Another option is UCSC: [UCSC Genome](https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/latest/) and [UCSC GTF](https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/genes/) (preferred). There are 4 different GTF references to use. For our purposes, we will use the following UCSC reference genome and annotation files:
-<br />
+
 ```shell
 wget -L https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/latest/hg38.fa.gz
 wget -L https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.ncbiRefSeq.gtf.gz
 
 ```
-<br />
+
 These files should be downloaded into an annotation file directory: <kbd> /root/genome/gtf </kbd> and a genome index direcotry: `<kbd> /root/genome/ref </kbd>
-<br />
+
 Scripts submitted to the high performance computing cluster (HPC) at Northwestern University require a header that can be interpreted by the schdeduler. An example SLURM header for the Quest HPC is below:
-<br />
+
 ```shell
 #!/bin/bash
 #SBATCH -A p32171 ##--## SLURM start
@@ -46,16 +43,16 @@ Scripts submitted to the high performance computing cluster (HPC) at Northwester
 #SBATCH --output=outlog
 #SBATCH --error=errlog
 ```
-<br />
+
 Much like Bowtie, [HISAT](http://daehwankimlab.github.io/hisat2/howto/) requires indices to be built prior to alignment. This allows efficient searching The first step is extraction of exons and splice sites from the GTF (annotation) file using their scripts. An example below:
-<br />
+
 ```shell
 /projects/b1042/BackmanLab/Lucas/090124_euseq/genome/ref_hisat/cloud.biohpc.swmed.edu/hisat2-2.2.1/hisat2_extract_splice_sites.py /projects/b1042/BackmanLab/Lucas/090124_euseq/genome/gtf/hg38.ncbiRefSeq.gtf > genome.ss
 /projects/b1042/BackmanLab/Lucas/090124_euseq/genome/ref_hisat/cloud.biohpc.swmed.edu/hisat2-2.2.1/hisat2_extract_exons.py /projects/b1042/BackmanLab/Lucas/090124_euseq/genome/gtf/hg38.ncbiRefSeq.gtf > genome.exon
 ```
-<br />
+
 HISAT2 indices for the reference genome can be built prior to alignment using the following command <kbd> hisat2-build -p < threads > --exon < path_to_exon_file > --ss < path_to_splicesite_file > < path_to_reference_genome.fa > < output_root_name > </kbd> . This script should be run in the directory where the reference genome is. An example below:
-<br />
+
 ```shell
 ##-- header here --##
 
@@ -68,16 +65,15 @@ cd /projects/b1042/BackmanLab/Lucas/090124_euseq/genome/ref_hisat/
 
 hisat2-build -p 12 --exon $exon --ss $ss $ref hg38
 ```
-<br />
+
 ## Alignment.sh usage and description
-<br />
+
 This script performs QC, trimming, mapping, coverage, and counting for EU-seq generated data. It generates directories, loops through  fastqs, and moves results into respective directories. This script is written to run on a SLURM HPC.  
-<br />
+
 Usage: <kbd>  bash alignment.sh -f <Forward Read> -w <Path to Working Directory> -g <Path to Bowtie Indices> -r <Path to Annotation File> -t <threads> </kbd>  
-<br />
+
 __Run script in directory where fastqs are located__  
 This script completes 6 functions: Quality Control, Alignment, Sorting, Counting, and Read QC of features:  
-<br />
 
 - Quality Control: eliminates the adaptor and low quality reads using trim_galore.  
 - Mapping: mapping via HISAT2 for all features  
@@ -85,9 +81,9 @@ This script completes 6 functions: Quality Control, Alignment, Sorting, Counting
 - Coverage: Generates bigwig files using RPGC and CPM normalization
 - Counting: pile-up of reads on features in introns, protein coding, and non-coding RNAs 
 - Read QC: Check read quality of FASTQs at the end  
-<br />
+
 An example call for alignment.sh is below:
-<br />
+
 ```shell
 ##-- header here --##
 
